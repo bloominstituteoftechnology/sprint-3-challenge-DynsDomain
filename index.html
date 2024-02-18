@@ -237,7 +237,41 @@
       // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
       //      and with the piece of mind of all tests passing, refactor to use map/filter
 
+      constructor(...ants) {
+    this.ants = ants.map(ant => ({ name: ant, health: 100 }));
+  }
+
+  work() {
+    this.ants = this.ants.filter(ant => {
+      if (ant.health <= 0) {
+        return false;
+      }
+
+      ant.health -= 20;
+
+      return ant.health > 0;
+    });
+
+    return this.ants.length
+      ? `${this.ants.length} ants starting work!`
+      : "No ants here. Did you work them to death?";
+  }
+
+  feed(name) {
+    const antsToFeed = this.ants.filter(ant => ant.name === name);
+
+    if (antsToFeed.length === 0) {
+      return `${name} not found!`;
     }
+
+    antsToFeed.forEach(ant => {
+      ant.health = Math.min(ant.health + 15, 100);
+    });
+
+    return "Yum!";
+  }
+}
+    
 
     // 🧪 TESTS, do not make any changes below this line ===================
     // 🧪 TESTS, do not make any changes below this line ===================
