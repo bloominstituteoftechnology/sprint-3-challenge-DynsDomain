@@ -167,7 +167,42 @@
       // 🌟 HINT: remember about the `slice` method which strings and arrays have
       // ❗ Feel free to implement `back`, although this is not required nor graded
 
+
+      constructor(text, charactersPerPage) {
+    this.text = text;
+    this.charactersPerPage = charactersPerPage;
+    this.currentPageIndex = 0;
+  }
+
+  next() {
+    if (this.currentPageIndex * this.charactersPerPage >= this.text.length) {
+      return null;
     }
+
+    const nextPage = this.text.slice(
+      this.currentPageIndex * this.charactersPerPage,
+      (this.currentPageIndex + 1) * this.charactersPerPage
+    );
+
+    this.currentPageIndex++;
+
+    return nextPage;
+  }
+
+  back() {
+    if (this.currentPageIndex == 0) {
+      return null;
+    }
+
+    this.currentPageIndex--;
+
+    return this.text.slice(
+      this.currentPageIndex * this.charactersPerPage,
+      (this.currentPageIndex + 1) * this.charactersPerPage
+    );
+  }
+}
+    
 
     // 👉 CHALLENGE 4 AntFarm
     class AntFarm {
