@@ -238,38 +238,44 @@
       //      and with the piece of mind of all tests passing, refactor to use map/filter
 
       constructor(...ants) {
-    this.ants = ants.map(ant => ({ name: ant, health: 100 }));
-  }
-
-  work() {
-    this.ants = this.ants.filter(ant => {
-      if (ant.health <= 0) {
-        return false;
-      }
-
-      ant.health -= 20;
-
-      return ant.health > 0;
-    });
-
-    return this.ants.length
-      ? `${this.ants.length} ants starting work!`
-      : "No ants here. Did you work them to death?";
-  }
-
-  feed(name) {
-    const antsToFeed = this.ants.filter(ant => ant.name === name);
-
-    if (antsToFeed.length === 0) {
-      return `${name} not found!`;
+        this.ants = ants.map(name => ({ name, health: 100 }));
     }
 
-    antsToFeed.forEach(ant => {
-      ant.health = Math.min(ant.health + 15, 100);
-    });
+    work() {
+        if (this.ants.length === 0) {
+            return "No ants here. Did you work them to death?";
+        }
 
-    return "Yum!";
-  }
+        let message = `${this.ants.length} ants starting work!`;
+
+        for (let i = 0; i < this.ants.length; i++) {
+            this.ants[i].health -= 20;
+            
+            if (this.ants[i].health <= 0) {
+                this.ants.splice(i, 1);
+                i--;  // adjust the index due to the removal
+            }
+        }
+
+        return message;
+    }
+
+    feed(name) {
+        let found = false;
+        this.ants = this.ants.map(ant => {
+            if (ant.name === name) {
+                ant.health += 15;
+                found = true;
+            }
+            return ant;
+        });
+
+        if (found) {
+            return "Yum!";
+        } else {
+            return `${name} not found!`;
+        }
+    }
 }
     
 
